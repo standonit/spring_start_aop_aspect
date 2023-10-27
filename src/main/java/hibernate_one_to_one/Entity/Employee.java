@@ -1,21 +1,32 @@
-package hibernate_test.Entity;
+package hibernate_one_to_one.Entity;
 
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-/*create table employees
-(
-id serial NOT NULL PRIMARY KEY,
-name varchar(15),
-surname varchar(25),
-department varchar(20),
-salary integer
-);*/
+/*CREATE TABLE details (
+		  id SERIAL NOT NULL,
+		  city varchar(15),
+		  phone_number varchar(25),
+		  email varchar(30), PRIMARY KEY (id)
+		);
+
+		CREATE TABLE employees (
+		  id SERIAL NOT NULL,
+		  name varchar(15),
+		  surname varchar(25),
+		  department varchar(20), salary int, details_id int,
+		  PRIMARY KEY (id),
+		  FOREIGN KEY (details_id) REFERENCES details(id)
+		);*/
 
 @Entity
 @Table(name = "employees")
@@ -37,6 +48,13 @@ public class Employee {
 	
 	@Column(name = "salary")
 	private int salary;
+	
+	//Один к одному(Uni-derictional)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "details_id")
+	private Detail empDetail;
+	
+	
 	
 	public Employee() {
 	}
@@ -93,12 +111,24 @@ public class Employee {
 	}
 
 
+	public Detail getEmpDetail() {
+		return empDetail;
+	}
+
+
+	public void setEmpDetail(Detail empDetail) {
+		this.empDetail = empDetail;
+	}
+
+	
+
+	
+
+
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", name=" + name + ", surname=" + surname + ", department=" + department
 				+ ", salary=" + salary + "]";
 	}
-	
-	
-
 }
+	
